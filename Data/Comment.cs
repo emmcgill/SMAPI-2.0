@@ -17,14 +17,14 @@ namespace Data
         [ForeignKey("CommentPost")]
         public int CommentPostId { get; set; }
         [ForeignKey("Author")]
-        public string AuthorId { get; set; }
-        public ApplicationUser Author { get; set; }
+        public Guid UserId { get; set; }
+        public virtual Author Author { get; set; }
         public Post CommentPost { get; set; }
 
     }
     public class Comment : APIComment
     {
-        public virtual DbSet<Reply> Replies { get; set; }
+        //public virtual DbSet<Reply> Replies { get; set; }
 
     }
 }
