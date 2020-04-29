@@ -61,17 +61,20 @@ namespace SMAPI.Controllers
 
         // GET: api/PostComments
         [HttpGet]
-        //public IEnumerable<Comment> PostComments(int id)
-        //{
-        //    return db.Posts.Include(x => x.Comments).FirstOrDefault(x => x.Id == id).Comments.Select(c =>
-        //          new Comment
-        //          {
-        //              Id = c.Id,
-        //              Text = c.Text,
-        //              AuthorId = c.AuthorId,
-        //              CommentPostId = c.CommentPostId,
-        //          });
-        //}
+       
+        public IEnumerable<Comment> PostComments(int id)
+        {
+            //return db.Posts.Include(x => x.Comments).FirstOrDefault(x => x.Id == id).Comments.Select(c =>
+            //      new Comment
+            //      {
+            //          Id = c.Id,
+            //          Text = c.Text,
+            //          AuthorId = c.AuthorId,
+            //          CommentPostId = c.CommentPostId,
+            //      });
+
+            return new List<Comment>();
+        }
 
         // GET: api/CommentReplies
         //[HttpGet]
