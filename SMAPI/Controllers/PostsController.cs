@@ -30,7 +30,7 @@ namespace SMAPI.Controllers
         }
 
         // GET: api/PostComments
-        [HttpGet]
+        /* [HttpGet]
         public IEnumerable<Comment> PostComments(int id)
         {
             return db.Posts.Include(x => x.Comments).FirstOrDefault(x => x.Id == id).Comments.Select(c =>
@@ -41,7 +41,7 @@ namespace SMAPI.Controllers
                       AuthorId = c.AuthorId,
                       CommentPostId = c.CommentPostId,
                   });
-        }
+        } */
 
         // GET: api/CommentReplies
         [HttpGet]
