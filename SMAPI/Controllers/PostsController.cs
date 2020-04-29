@@ -11,11 +11,41 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using SMAPI.Models;
 using Data;
+using Services;
+using Microsoft.AspNet.Identity;
+using Models;
 
 namespace SMAPI.Controllers
 {
     public class SocialController : ApiController
     {
+        private PostService CreatePostService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var postService = new PostService(userId);
+            return postService;
+        }
+
+        public IHttpActionResult Get()
+        {
+            PostService postService = CreatePostService();
+            var posts = postService.GetNotes();
+            return Ok(posts);
+        }
+
+        public IHttpActionResult Post(PostCreate post)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePostService();
+
+            if (!service.CreatePost(post))
+                return InternalServerError();
+
+            return Ok();
+        }
+
         private ApplicationDbContext db;
         public SocialController()
         {
@@ -31,31 +61,31 @@ namespace SMAPI.Controllers
 
         // GET: api/PostComments
         [HttpGet]
-        public IEnumerable<Comment> PostComments(int id)
-        {
-            return db.Posts.Include(x => x.Comments).FirstOrDefault(x => x.Id == id).Comments.Select(c =>
-                  new Comment
-                  {
-                      Id = c.Id,
-                      Text = c.Text,
-                      AuthorId = c.AuthorId,
-                      CommentPostId = c.CommentPostId,
-                  });
-        }
+        //public IEnumerable<Comment> PostComments(int id)
+        //{
+        //    return db.Posts.Include(x => x.Comments).FirstOrDefault(x => x.Id == id).Comments.Select(c =>
+        //          new Comment
+        //          {
+        //              Id = c.Id,
+        //              Text = c.Text,
+        //              AuthorId = c.AuthorId,
+        //              CommentPostId = c.CommentPostId,
+        //          });
+        //}
 
         // GET: api/CommentReplies
-        [HttpGet]
-        public IEnumerable<Reply> CommentReplies(int id)
-        {
-            return db.Comments.Include(x => x.Replies).FirstOrDefault(x => x.Id == id).Replies.Select(c =>
-                  new Reply
-                  {
-                      Id = c.Id,
-                      Text = c.Text,
-                      AuthorId = c.AuthorId,
-                      CommentId = c.CommentId,
-                  });
-        }
+        //[HttpGet]
+        //public IEnumerable<Reply> CommentReplies(int id)
+        //{
+        //    return db.Comments.Include(x => x.Replies).FirstOrDefault(x => x.Id == id).Replies.Select(c =>
+        //          new Reply
+        //          {
+        //              Id = c.Id,
+        //              Text = c.Text,
+        //              AuthorId = c.AuthorId,
+        //              CommentId = c.CommentId,
+        //          });
+        //}
 
         // POST: api/Posts
         [HttpPost]
